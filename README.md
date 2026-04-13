@@ -1,4 +1,5 @@
 <!-- PROJECT SHIELDS -->
+[![License][license-shield]][license-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![Website][website-shield]][website-url]
@@ -7,17 +8,27 @@
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <a href="https://videodb.io/">
-    <img src="https://codaio.imgix.net/docs/_s5lUnUCIU/blobs/bl-RgjcFrrJjj/d3cbc44f8584ecd42f2a97d981a144dce6a66d83ddd5864f723b7808c7d1dfbc25034f2f25e1b2188e78f78f37bcb79d3c34ca937cbb08ca8b3da1526c29da9a897ab38eb39d084fd715028b7cc60eb595c68ecfa6fa0bb125ec2b09da65664a4f172c2f" alt="VideoDB" width="300">
-  </a>
+  <a href="https://videodb.io/"><img src="https://codaio.imgix.net/docs/_s5lUnUCIU/blobs/bl-RgjcFrrJjj/d3cbc44f8584ecd42f2a97d981a144dce6a66d83ddd5864f723b7808c7d1dfbc25034f2f25e1b2188e78f78f37bcb79d3c34ca937cbb08ca8b3da1526c29da9a897ab38eb39d084fd715028b7cc60eb595c68ecfa6fa0bb125ec2b09da65664a4f172c2f" alt="VideoDB" height="72"></a>
+</p>
 
-  <h3 align="center">Do Thought Streams Matter?</h3>
+<h3 align="center">Do Thought Streams Matter?</h3>
 
-  <p align="center">
-    Evaluating Reasoning in Gemini Vision-Language Models for Video Scene Understanding
-    <br />
-    <!-- <a href="https://arxiv.org/abs/XXXX.XXXXX"><strong>Read the Paper »</strong></a> -->
-  </p>
+<p align="center">
+  Evaluating Reasoning in Gemini Vision-Language Models for Video Scene Understanding.
+  <br />
+  <br />
+  <strong>Upload → Extract → Infer → Evaluate</strong>
+</p>
+
+<p align="center">
+  <a href="#quick-start">Quick Start</a>
+  ·
+  <a href="#metrics">Metrics</a>
+  ·
+  <a href="#configuration">Configuration</a>
+  ·
+  <!-- <a href="https://arxiv.org/abs/XXXX.XXXXX"><strong>Read the Paper</strong></a> · -->
+  <a href="https://github.com/video-db/gemini-reasoning-eval/issues">Report Bug</a>
 </p>
 
 ---
@@ -280,11 +291,13 @@ gemini-reasoning-eval/
 - **Discord**: [Join community](https://discord.gg/py9P639jGz)
 
 <!-- MARKDOWN LINKS & IMAGES -->
-[stars-shield]: https://img.shields.io/github/stars/video-db/gemini-reasoning-eval.svg?style=flat
+[license-shield]: https://img.shields.io/github/license/video-db/gemini-reasoning-eval.svg?style=for-the-badge
+[license-url]: https://github.com/video-db/gemini-reasoning-eval/blob/main/LICENSE
+[stars-shield]: https://img.shields.io/github/stars/video-db/gemini-reasoning-eval.svg?style=for-the-badge
 [stars-url]: https://github.com/video-db/gemini-reasoning-eval/stargazers
-[issues-shield]: https://img.shields.io/github/issues/video-db/gemini-reasoning-eval.svg?style=flat
+[issues-shield]: https://img.shields.io/github/issues/video-db/gemini-reasoning-eval.svg?style=for-the-badge
 [issues-url]: https://github.com/video-db/gemini-reasoning-eval/issues
-[website-shield]: https://img.shields.io/website?url=https%3A%2F%2Fvideodb.io&style=flat
+[website-shield]: https://img.shields.io/website?url=https%3A%2F%2Fvideodb.io&style=for-the-badge
 [website-url]: https://videodb.io
-[discord-shield]: https://img.shields.io/badge/discord-join-7289da?style=flat&logo=discord
+[discord-shield]: https://img.shields.io/badge/discord-join-7289da?style=for-the-badge&logo=discord
 [discord-url]: https://discord.gg/py9P639jGz
