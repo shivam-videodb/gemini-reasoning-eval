@@ -1,0 +1,63 @@
+# gemini-reasoning-eval pipeline configuration
+
+videos:
+  # Existing VideoDB collection ID (set to skip upload step)
+  collection_id: null
+
+  # Video sources: URLs (YouTube, direct links) or absolute local file paths.
+  # Local paths and URLs can be mixed in the same list.
+  sources:
+    - "https://www.youtube.com/watch?v=example1"
+    # - "https://example.com/video.mp4"
+    # - "/path/to/local/video.mp4"
+
+videodb:
+  # Number of frames to extract per scene (paper: 1 FPS with cap of 10 frames per scene)
+  max_frames_per_scene: 10
+
+gemini:
+  # Per-model variant configuration matching the paper's 4 evaluated variants:
+  #   Flash – 128, Flash – Dynamic, Lite – 512, Lite – 1024
+  # thinking_budgets: use -1 for Dynamic (no fixed cap; model allocates freely)
+  variants:
+    - model: "gemini-2.5-flash"
+      thinking_budgets: [128, -1]
+    - model: "gemini-2.5-flash-lite"
+      thinking_budgets: [512, 1024]
+
+  max_concurrent: 10
+
+  temperature: 0.0
+
+  prompt: |
+    Analyze the entire sequence of video frames to identify the main human or object activity, the camera shot type, and any visible logos or brand markings.
+    Describe the activity in 1-2 sentences using clear, everyday verbs and mention any human-object interaction or context (e.g., "a person driving a motorcycle through traffic," "a chef plating food in a restaurant kitchen").
+    Infer the shot type based on framing or perspective, and return it as a short, lowercase phrase with underscores (e.g., close_up, wide_shot, pov).
+    If any logo or brand is visible, set "logo_detection": true and transcribe its name; otherwise keep "logo_detection": false and "brand_name": []. IF there are multiple brands, return them in a list of strings. Make sure you capture all the brands in the video.
+    Always return a single structured JSON object in this format:
+
+    {
+      "activity": "person jogging along a park trail while listening to music",
+      "shot_type": "medium_wide",
+      "logo_detection": true,
+      "brand_name": ["Adidas", "KFC"]
+    }
+
+judge:
+  # OpenAI model used as LLM judge for coverage metrics
+  model: "gpt-5"
+  batch_size: 1
+  max_concurrent: 5
+  max_retries: 5
+  retry_min_wait: 2
+  retry_max_wait: 60
+  tokens_per_minute: 2000000
+  fuzzy_match_threshold: 75
+
+output:
+  dir: "outputs"
+
+visualization:
+  enabled: true
+  format: "png"
+  dpi: 300

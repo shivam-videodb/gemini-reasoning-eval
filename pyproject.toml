@@ -1,0 +1,33 @@
+[project]
+name = "gemini-reasoning-eval"
+version = "0.1.0"
+description = "Evaluate reasoning quality in Gemini vision-language models for video scene understanding"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.12"
+dependencies = [
+    "google-genai>=1.0.0",
+    "videodb>=0.2.0",
+    "openai>=1.14.0",
+    "pydantic>=2.6.0",
+    "pyyaml>=6.0",
+    "python-dotenv>=1.0.0",
+    "nltk>=3.8.0",
+    "thefuzz>=0.22.0",
+    "python-Levenshtein>=0.20.0",
+    "matplotlib>=3.8.0",
+    "numpy>=1.26.0",
+    "tqdm>=4.66.0",
+    "tenacity>=8.2.3",
+    "diskcache>=5.6.3",
+    "requests>=2.31.0",
+    "Pillow>=10.0.0",
+]
+
+[tool.setuptools]
+py-modules = ["run"]
+packages = ["src"]
+
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
