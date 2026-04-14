@@ -92,7 +92,8 @@ You will need API keys from three services:
 git clone https://github.com/video-db/gemini-reasoning-eval.git
 cd gemini-reasoning-eval
 
-pip install -r requirements.txt
+pip install uv
+uv sync
 
 cp .env.sample .env
 # Fill in your API keys in .env
@@ -101,7 +102,7 @@ cp .env.sample .env
 Add your videos to `configs/default.yaml` (see [Video Sources](#video-sources) below), then run the full pipeline:
 
 ```bash
-python run.py --config configs/default.yaml
+uv run python run.py --config configs/default.yaml
 ```
 
 ## Video Sources
@@ -170,7 +171,7 @@ visualization:
 Runs all five steps in sequence: upload, extract, infer, evaluate, visualize.
 
 ```bash
-python run.py --config configs/default.yaml
+uv run python run.py --config configs/default.yaml
 ```
 
 ### Run Individual Steps
@@ -178,17 +179,17 @@ python run.py --config configs/default.yaml
 Run or re-run a specific step independently:
 
 ```bash
-python run.py --config configs/default.yaml --step upload      # Upload videos to VideoDB
-python run.py --config configs/default.yaml --step extract     # Extract scenes and frame URLs
-python run.py --config configs/default.yaml --step infer       # Run Gemini VLM inference
-python run.py --config configs/default.yaml --step evaluate    # Compute evaluation metrics
-python run.py --config configs/default.yaml --step visualize   # Generate publication figures
+uv run python run.py --config configs/default.yaml --step upload      # Upload videos to VideoDB
+uv run python run.py --config configs/default.yaml --step extract     # Extract scenes and frame URLs
+uv run python run.py --config configs/default.yaml --step infer       # Run Gemini VLM inference
+uv run python run.py --config configs/default.yaml --step evaluate    # Compute evaluation metrics
+uv run python run.py --config configs/default.yaml --step visualize   # Generate publication figures
 ```
 
 ### Resume an Interrupted Run
 
 ```bash
-python run.py --config configs/default.yaml --resume
+uv run python run.py --config configs/default.yaml --resume
 ```
 
 Already-completed steps are skipped automatically. Safe to re-run after any interruption.
