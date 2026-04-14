@@ -15,9 +15,6 @@
 
 <p align="center">
   Evaluating Reasoning in Gemini Vision-Language Models for Video Scene Understanding.
-  <br />
-  <br />
-  <strong>Upload → Extract → Infer → Evaluate</strong>
 </p>
 
 <p align="center">
@@ -27,7 +24,8 @@
   ·
   <a href="#configuration">Configuration</a>
   ·
-  <!-- <a href="https://arxiv.org/abs/XXXX.XXXXX"><strong>Read the Paper</strong></a> · -->
+  <a href="https://arxiv.org/abs/2604.11177"><strong>Read the Paper</strong></a>
+  ·
   <a href="https://github.com/video-db/gemini-reasoning-eval/issues">Report Bug</a>
 </p>
 
@@ -35,19 +33,19 @@
 
 ## Overview
 
-Large vision-language models like Gemini 2.5 Flash support "extended thinking" - an internal reasoning trace before producing the final answer. But does thinking more actually help? Where do gains stop? What do models actually think about?
+Large vision-language models like Gemini 2.5 Flash support "extended thinking"—an internal reasoning trace before producing the final answer. But does additional thinking actually improve results? Where do the gains plateau? What do models reason about?
 
-We benchmark four Gemini 2.5 Flash and Flash Lite configurations across **100 hours of video** (93,000+ scene-level results) to answer these questions. This repo provides the complete pipeline to reproduce our evaluation on your own video data.
+This project benchmarks four Gemini 2.5 Flash and Flash Lite configurations across **100 hours of video** (93,000+ scene-level results) to answer these questions. The repository provides a complete pipeline to reproduce the evaluation on custom video data.
 
-<!-- Read the full paper: [Do Thought Streams Matter? (arXiv)](https://arxiv.org/abs/XXXX.XXXXX) -->
+Read the full paper: [Do Thought Streams Matter? (arXiv)](https://arxiv.org/abs/2604.11177)
 
 ### Evaluation Metrics
 
-- **Contentfulness** -- How much of the thought stream is actual scene content vs. meta-commentary?
-- **Thought Coverage (Recall)** -- Of everything the model thought about, how much made it into the final output?
-- **Output Grounding (Precision)** -- Of everything in the final output, how much was actually in the thought stream?
-- **F1** -- Harmonic mean of Recall and Precision
-- **Dominant Entity Analysis** -- Most prominent subject, action, and setting per scene
+- **Contentfulness** – Measures the proportion of thought stream tokens dedicated to actual scene content versus meta-commentary (e.g., "let me analyze...")
+- **Thought Coverage (Recall)** – Quantifies how much of the model's internal reasoning appears in the final output
+- **Output Grounding (Precision)** – Measures whether final output content is grounded in the thought stream, detecting hallucinations introduced during compression
+- **F1 Score** – Harmonic mean of Recall and Precision, providing a balanced assessment of reasoning fidelity
+- **Dominant Entity Analysis** – Identifies the most prominent subject, action, and setting per scene
 
 ## Key Findings
 
@@ -58,23 +56,23 @@ We benchmark four Gemini 2.5 Flash and Flash Lite configurations across **100 ho
 | Lite – 512 | 0.520 | 0.940 | 0.948 | 0.942 |
 | **Lite – 1024** | **0.582** | **0.954** | **0.966** | **0.959** |
 
-- **Diminishing returns** -- Most quality improvement happens in the first ~300 thinking tokens, then plateaus sharply
-- **Lite 1024 wins** -- Leads on every metric while using 30% fewer thought tokens than Flash Dynamic
-- **Compression-step hallucination** -- Flash 128 outputs ~25% content not grounded in its own thought stream (Precision = 0.767)
-- **Cross-tier similarity** -- Flash and Lite produce 88-90% similar thought streams despite being different model tiers
-- **Subject specificity** -- Lower budgets default to generic labels ("person" at 15%) vs. specific identities ("chef", "streamer" at 8%) with higher budgets
+- **Diminishing Returns** – Quality gains plateau after approximately 300 thinking tokens, with minimal improvement beyond this threshold
+- **Lite 1024 Outperforms** – Achieves the highest scores across all metrics while consuming 30% fewer thought tokens than Flash Dynamic
+- **Compression-Step Hallucination** – Flash 128 exhibits a Precision of 0.767, indicating that roughly 25% of its output content lacks grounding in its reasoning trace
+- **Cross-Tier Similarity** – Flash and Lite variants produce 88–90% similar thought streams despite architectural differences
+- **Subject Specificity** – Constrained budgets yield generic labels (e.g., "person" appears in 15% of outputs), while larger budgets enable specific identifications (e.g., "chef", "streamer" at 8%)
 
 > **Note on thought text visibility:** Gemini only returns thought text in the response when `includeThoughts=True` is set in `ThinkingConfig`. Without this flag, the model uses thinking tokens internally but the thought stream is not accessible. This pipeline sets it correctly for all variants.
 
 ## Dataset
 
-Our benchmark uses approximately **100 hours of video** spanning:
+The benchmark comprises approximately **100 hours of video** spanning:
 
-- **37 visual styles** -- animation, cinematic, documentary, gameplay, live concert, surveillance, vlogs, and more
-- **38 content domains** -- entertainment, sports, news, education, culinary, music, drama, gaming, corporate, travel
+- **37 visual styles** – animation, cinematic, documentary, gameplay, live concert, surveillance, vlogs, and more
+- **38 content domains** – entertainment, sports, news, education, culinary, music, drama, gaming, corporate, travel
 - **93,000+ scene-level results** across all four model variants
 
-Scenes are extracted using VideoDB's visual and semantic boundary detection. Each scene is processed with 1-10 frames at 1 FPS.
+Scenes are extracted using VideoDB's visual and semantic boundary detection. Each scene is processed with 1–10 frames at 1 FPS.
 
 ## Prerequisites
 
@@ -110,7 +108,7 @@ python run.py --config configs/default.yaml
 
 Edit the `videos.sources` list in your config file. You can use local files, URLs, or both.
 
-**Local files** -- provide absolute paths to video files on your machine:
+**Local files** – Absolute paths to video files:
 
 ```yaml
 videos:
@@ -119,7 +117,7 @@ videos:
     - "/home/user/videos/clip2.mov"
 ```
 
-**URLs** -- YouTube links, direct video URLs, or any publicly accessible video:
+**URLs** – YouTube links, direct video URLs, or any publicly accessible video:
 
 ```yaml
 videos:
@@ -134,7 +132,7 @@ Local paths and URLs can be mixed in the same list. The pipeline detects each ty
 
 All options are set in a YAML config file. The default is `configs/default.yaml`.
 
-**Gemini variants** -- specify model + thinking budgets per family (`-1` = dynamic/unlimited):
+**Gemini variants** – Model and thinking budget configuration (`-1` = dynamic/unlimited):
 
 ```yaml
 gemini:
@@ -146,17 +144,17 @@ gemini:
   max_concurrent: 10   # parallel Gemini API calls per variant
 ```
 
-**LLM judge** -- OpenAI model used to evaluate coverage metrics:
+**LLM judge** – OpenAI model for evaluating coverage metrics:
 
 ```yaml
 judge:
-  model: "gpt-5"
+  model: "gpt-5.4"
   batch_size: 1
   max_concurrent: 5    # parallel judge batches
   tokens_per_minute: 2000000
 ```
 
-**Visualization** -- output format and resolution for figures:
+**Visualization** – Output format and resolution for figures:
 
 ```yaml
 visualization:
@@ -215,7 +213,7 @@ Already-completed steps are skipped automatically. Safe to re-run after any inte
 
 ### Contentfulness
 
-Fraction of thought stream words that are scene content (noun/verb phrases) vs. meta-commentary ("let me analyze", "I will format").
+Measures the fraction of thought stream tokens that convey actual scene content (noun/verb phrases) versus meta-commentary (e.g., "let me analyze", "I will format").
 
 ```
 Contentfulness = content_words / total_words
@@ -223,34 +221,36 @@ Contentfulness = content_words / total_words
 
 ### Recall (Thought Coverage)
 
-Of all items the model reasoned about, how many appear in the final output?
+Captures the proportion of reasoned items that appear in the final output.
 
 ```
-Recall = |thought_items matching final_items| / |thought_items|
+Recall = |thought_items ∩ final_items| / |thought_items|
 ```
 
 ### Precision (Output Grounding)
 
-Of all items in the final output, how many were grounded in the thought stream?
+Measures the proportion of final output items that are grounded in the thought stream.
 
 ```
-Precision = |final_items matching thought_items| / |final_items|
+Precision = |final_items ∩ thought_items| / |final_items|
 ```
 
-Low Precision indicates **compression-step hallucination** -- the model added content not present in its reasoning.
+Low Precision indicates **compression-step hallucination**—content introduced in the final output without corresponding reasoning in the thought stream.
 
-### F1
+### F1 Score
+
+Provides a balanced measure of reasoning fidelity by combining Recall and Precision.
 
 ```
-F1 = 2 * Recall * Precision / (Recall + Precision)
+F1 = 2 × Recall × Precision / (Recall + Precision)
 ```
 
-### Matching
+### Matching Strategy
 
-Items are matched using cascaded fuzzy matching:
-1. Exact match
-2. Token-sort ratio >= 75
-3. Partial ratio >= 75 (handles morphological variants like "speaks" / "speaking")
+Items are matched using a cascaded fuzzy matching approach:
+1. **Exact match** – Direct string equality
+2. **Token-sort ratio ≥ 75** – Handles word reordering
+3. **Partial ratio ≥ 75** – Accommodates morphological variants (e.g., "speaks" ↔ "speaking")
 
 ## Output Structure
 
@@ -289,6 +289,19 @@ gemini-reasoning-eval/
 - **Docs**: [docs.videodb.io](https://docs.videodb.io)
 - **Issues**: [GitHub Issues](https://github.com/video-db/gemini-reasoning-eval/issues)
 - **Discord**: [Join community](https://discord.gg/py9P639jGz)
+
+## Citation
+
+If this work is useful for your research, please cite our paper:
+
+```bibtex
+@article{Nagaonkar2026thought,
+  title={Do Thought Streams Matter? Evaluating Reasoning in Gemini Vision-Language Models for Video Scene Understanding},
+  author={Sharma, Shivam and Nagaonkar, Sankalp and Choithani, Ashish and Trivedi, Ashutosh},
+  journal={arXiv preprint arXiv:2604.11177},
+  year={2026}
+}
+```
 
 <!-- MARKDOWN LINKS & IMAGES -->
 [license-shield]: https://img.shields.io/github/license/video-db/gemini-reasoning-eval.svg?style=for-the-badge
