@@ -45,7 +45,7 @@ gemini:
 
 judge:
   # OpenAI model used as LLM judge for coverage metrics
-  model: "gpt-5"
+  model: "gpt-5.4"
   batch_size: 1
   max_concurrent: 5
   max_retries: 5
